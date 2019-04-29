@@ -1,0 +1,41 @@
+###
+###
+### Configuration for scrapers
+###
+### One config per CL site (e.g. sf)
+###
+db_path: 'sqlite:////Users/andy/PycharmProjects/real_estate/asset.db'
+scrapers:         # A list of resources to scrape
+  craigslist:
+    base_url: "https://sfbay.craigslist.org/search/eby/apa"
+    neighborhoods:
+      "alameda": 46
+      "albany / el cerrito": 47
+      "berkeley": 48
+      "berkeley north / hills": 49
+      "concord / pleasant hill / martinez": 51
+      "danville / san ramon": 52
+      "dublin / pleasanton / livermore": 53
+      "hayward / castro valley": 55
+      "hercules, pinole, san pablo, el sob": 56
+      "oakland north / temescal": 62
+      "oakland west": 64
+      "richmond": 65
+      "san leandro": 67
+      "emeryville": 112
+      "pittsburg / antioch": 113
+      "fairfield / vacaville": 154
+    housing_types:
+      "apartment": 1
+      "house": 6
+      "in law": 7
+      "townhouse": 9
+      "duplex": 4
+    job_neighborhood:
+#      - "oakland north / temescal"
+#      - "hayward / castro valley"
+      - "san leandro"
+      - "richmond"
+    job_hour: 12
+    job_minute: 0
+    time_variation: 45

@@ -4,9 +4,7 @@
 #
 #   Servers to periodically run scraper data collectors
 #
-import yaml
-import datetime
-import random
+import os
 
 from apscheduler.schedulers.background import BlockingScheduler
 
@@ -14,44 +12,48 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from collectors.rentals import CraigsList
+from core.util import load_config
 
 DEBUG = True
-CONFIG_PATH = './config/scraper_config.yml'
 
+# Find the project root assuming we are one dir deep.
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-def date_tomorrow(hour, minute, interval=24):
-    """ Return date for tomorrow at hour and minute passed """
+CONFIG_PATH = os.path.join(PROJECT_ROOT, 'config/scraper_config.yml')
 
-    date_now = datetime.datetime.now()
-
-    tomorrow = date_now + datetime.timedelta(hours=interval)
-
-    return datetime.datetime(year=tomorrow.year, month=tomorrow.month, day=tomorrow.day,
-                             hour=hour, minute=minute)
-
-def date_jitter(date_in, jitter_minutes=59):
-    """ Add some random jitter to configed dates """
-
-    r = random.random()
-
-    jitter = (r - 0.5) * jitter_minutes
-
-    return date_in + datetime.timedelta(minutes=jitter)
-
-
-def load_config(conf):
-    """
-    Load yml config file return contents
-
-    :param conf: Path to yaml file config
-    :return: config
-    """
-
-    with open(conf, 'r') as yf:
-
-        config = yaml.safe_load(yf)
-
-    return config
+# def date_tomorrow(hour, minute, interval=24):
+#     """ Return date for tomorrow at hour and minute passed """
+#
+#     date_now = datetime.datetime.now()
+#
+#     tomorrow = date_now + datetime.timedelta(hours=interval)
+#
+#     return datetime.datetime(year=tomorrow.year, month=tomorrow.month, day=tomorrow.day,
+#                              hour=hour, minute=minute)
+#
+# def date_jitter(date_in, jitter_minutes=59):
+#     """ Add some random jitter to configed dates """
+#
+#     r = random.random()
+#
+#     jitter = (r - 0.5) * jitter_minutes
+#
+#     return date_in + datetime.timedelta(minutes=jitter)
+#
+#
+# def load_config(conf):
+#     """
+#     Load yml config file return contents
+#
+#     :param conf: Path to yaml file config
+#     :return: config
+#     """
+#
+#     with open(conf, 'r') as yf:
+#
+#         config = yaml.safe_load(yf)
+#
+#     return config
 
 
 def run_cl_job(**kwargs):
@@ -92,6 +94,7 @@ def run_all_cl_jobs(**kwargs):
 
         # TODO: Add random wait
 
+
 if __name__ == "__main__":
 
     config = load_config(CONFIG_PATH)
@@ -122,5 +125,7 @@ if __name__ == "__main__":
     else:
         # If DEBUG, run immediately
         run_all_cl_jobs(**kwargs_pass)
+
+    # Enrich new records with census geography
 
     session.close()

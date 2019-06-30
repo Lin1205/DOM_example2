@@ -5,9 +5,10 @@
 #   Web-scraper data collectors for rental listing websites
 #
 import re
+import datetime
+
 import requests
 import numpy as np
-
 from bs4 import BeautifulSoup as bsoup
 from sqlalchemy import and_
 
@@ -187,7 +188,10 @@ class CraigsList:
                 li_data_id = int(listings[ind].find(class_="result-title hdrlnk").get("data-id"))
                 li_title = listings[ind].find(class_="result-title hdrlnk").text
 
-                # Strip "$" off rent figure                                     TODO: Need to handle exception if fails?
+                li_date_str = listings[ind].find(class_="result-date").get("datetime")
+                li_date = datetime.datetime.strptime(li_date_str,'%Y-%m-%d %H:%M')
+
+                # Strip "$" off rent figure  TODO: Need to handle exception if fails?
                 li_rent = float(listings[ind].find(class_='result-price').text.replace('$', ''))
 
                 li_href = listings[ind].find(class_="result-title hdrlnk").get('href')
@@ -197,6 +201,7 @@ class CraigsList:
                                         title=li_title,
                                         rent=li_rent,
                                         url=li_href,
+                                        date_listed=li_date,
                                         source='cl',
                                         property_type=self.housing_type_name,
                                         neighborhood=self.neighborhood,

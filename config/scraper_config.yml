@@ -33,9 +33,10 @@ scrapers:         # A list of resources to scrape
       "duplex": 4
     job_neighborhood:
 #      - "oakland north / temescal"
+      - "dublin / pleasanton / livermore"
 #      - "hayward / castro valley"
-      - "san leandro"
-      - "richmond"
+#      - "san leandro"
+#      - "richmond"
     job_hour: 12
     job_minute: 0
     time_variation: 45

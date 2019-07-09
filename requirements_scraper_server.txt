@@ -1,6 +1,5 @@
 SQLAlchemy
 APScheduler
 requests
-numpy
 bs4
 PyYAML

@@ -5,6 +5,7 @@
 #   Servers to periodically run scraper data collectors
 #
 import os
+import time
 
 from apscheduler.schedulers.background import BlockingScheduler
 
@@ -81,12 +82,17 @@ def run_all_cl_jobs(**kwargs):
 
     config = kwargs['config']
     session = kwargs['session']
+    first = True
 
     for hood in config['job_neighborhood']:
 
         kwargs_pass = {'job_neighborhood': hood,
                        'config': config,
                        'session': session}
+
+        if not first:
+            time.sleep(3, 59)
+            first = False
 
         run_cl_job(**kwargs_pass)
 

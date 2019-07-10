@@ -6,6 +6,8 @@
 #
 import re
 import datetime
+import time
+import random
 
 import requests
 import numpy as np
@@ -209,6 +211,11 @@ class CraigsList:
 
                 # Retrieve listing details link, for more details on the property
                 # TODO Add random wait here
+
+                # Wait up to 30 sec between scrapes
+                wait_time = random.randint(1, 30)
+
+                time.sleep(wait_time)
                 resp_li = requests.get(li_href)
                 txt_li = bsoup(resp_li.text, 'html.parser')
 
